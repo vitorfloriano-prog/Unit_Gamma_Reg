@@ -141,9 +141,23 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   beta.inic  <- solve(t(X)%*%X)%*%t(X)%*%Y
   
   # logit transform
+  z <- log(Y / (1 - Y))
   
-  # phi kickoff
-  phi.inic <- 20
+  # cálculo do e_chap
+  e_chap <- z - X %*% solve(t(X) %*% X) %*% t(X) %*% z
+  
+  # mu_chap via regressão linear no logit
+  mu_chap <- exp(X %*% solve(t(X) %*% X) %*% t(X) %*% z) /
+    (1 + exp(X %*% solve(t(X) %*% X) %*% t(X) %*% z))
+  
+  # g.linha elemento a elemento
+  g.linha <- 1 / (mu_chap * (1 - mu_chap))
+  
+  # sigma estimada
+  sig_chap <- as.numeric(t(e_chap) %*% e_chap / (n - p))
+  
+  # chute inicial de phi
+  phi.inic <- (1 / n) * sum((mu_chap * (1 - mu_chap)) / sig_chap - 1)
   
   # theta.inic <- c(as.numeric(beta.inic), phi_inic)
   
@@ -495,4 +509,5 @@ summary.Unit.gamma <- function(object, digits = 3, ...) {
   cat("Number of errors in bootstrap:", object$cont.erro.B, "\n")
   cat("===========================================\n")
   invisible(object)
+  
 }
