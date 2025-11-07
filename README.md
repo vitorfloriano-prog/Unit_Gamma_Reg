@@ -12,4 +12,4 @@ This project offers an R script implementing a unit gamma model with bootstrap b
 - q: This parameter defines how many variables will be tested in the hypothesis tests. With $q \geq 2$, the tests become multiparametric;
 - B: This parameter defines the number of repetitions that will be performed during the bootstrap step.
 
-### Função summary.Unit.gamma() 
+The summary.Unit.gamma function does not require any parameters, only the fitted model, for the reasons already mentioned in the preceding paragraphs.
