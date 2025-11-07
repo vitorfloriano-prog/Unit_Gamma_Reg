@@ -10,7 +10,7 @@ Description: Implements routines to fit regression models for the Unit Gamma dis
   compute maximum likelihood estimates (MLE), and perform hypothesis tests (Likelihood Ratio, 
   Wald, Score, and Gradient tests). Also provides bias-correction methods and bootstrap-based
   p-values.
-License: MIT + file LICENSE
+License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
