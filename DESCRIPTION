@@ -1,20 +1,20 @@
 Package: UnitGammaReg
-Title: Modelos de Regressão para a Distribuição Gamma Unidade
+Title: Desenvolvimento de Scripts para Inferência via Bootstrap no Modelo de Regressão Gama Unitária
 Version: 0.0.0.9000
 Authors@R: person(given = "Vitor Hugo ",
                   family = "Floriano Pereira",
                   role = c("aut", "cre"),
                   email = "vitor.floriano@discente.ufg.br",
                   comment = "Primeiro Autor e Criador")
-Description: Implements routines to fit regression models for the Unit Gamma distribution, 
-  compute maximum likelihood estimates (MLE), and perform hypothesis tests (Likelihood Ratio, 
-  Wald, Score, and Gradient tests). Also provides bias-correction methods and bootstrap-based
-  p-values.
-License: What license is it under?
+Description: Implements routines to fit regression models for the Unit Gamma distribution,
+    compute maximum likelihood estimates (MLE), and perform hypothesis tests (Likelihood Ratio,
+    Wald, Score, and Gradient tests). Also provides bias-correction methods and bootstrap-based
+    p-values.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports:
-    stats,   # Para funções como optim, model.frame, pchisq, rgamma, etc.
-    utils    # Para try e outras funções básicas
+    stats,
+    utils
 RoxygenNote: 7.2.3
