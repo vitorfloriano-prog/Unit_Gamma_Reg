@@ -1,13 +1,13 @@
 # ------------------------------
-# Unit.gamma.reg - Final Version
+# Unit.gamma.reg - Versão final
 # ------------------------------
 ugamma.fit <- function(formula = NULL, data = NULL,
                        Y = NULL, X = NULL,
                        intercepto = TRUE,
                        q = 1, B = 1000) {
-  # Preparation: accept formula + data (like lm/glm), or Y and X directly
+  # Preparação: aceitar formula + data (como lm/glm), ou Y e X diretamente
   if (!is.null(formula)) {
-    if (!inherits(formula, "formula")) stop("Argument 'formula' must be an R formula.")
+    if (!inherits(formula, "formula")) stop("Argumento 'formula' deve ser uma fórmula R.")
     if (is.null(data)) {
       mf <- model.frame(formula, envir = parent.frame())
       Xmat <- model.matrix(formula, data = parent.frame())
@@ -26,22 +26,22 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     if (is.data.frame(X)) X <- as.matrix(X)
     X <- as.matrix(X)
     if (intercepto) {
-      # adds intercept if not existing (assumes that if the first column = 1 then it already exists)
+      # adiciona intercepto se não existente (assume que se primeira coluna = 1 então já existe)
       if (!(all(X[,1] == 1))) X <- cbind(1, X)
     }
   } else {
-    stop("Provide 'formula + data' OR 'Y' and 'X' directly.")
+    stop("Forneça 'formula + data' OU 'Y' e 'X' diretamente.")
   }
   
-  # basic checks
-  if (!is.numeric(Y)) stop("Error: Y must be numeric.")
-  if (nrow(Y) != nrow(X)) stop("Number of observations in Y and X must match.")
+  # checagens básicas
+  if (!is.numeric(Y)) stop("Erro: Y deve ser numérico.")
+  if (nrow(Y) != nrow(X)) stop("Número de observações de Y e X deve coincidir.")
   if (!is.matrix(Y)) Y <- as.matrix(Y)
   n <- nrow(X)
   p <- ncol(X)
-  if (q >= p) stop("'q' must be less than the number of parameters p.")
+  if (q >= p) stop("'q' deve ser menor que o número de parâmetros p.")
   
-  # avoid Y exactly 0 or 1
+  # evitar Y exatamente 0 ou 1
   eps <- 1e-10
   Y <- pmin(pmax(as.numeric(Y), eps), 1 - eps)
   Y <- as.matrix(Y)
@@ -49,14 +49,14 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   set.seed(100)
   
   psi.0 <- rep(0, q)
-  ## Function to generate the sample Y ####
+  ## Funcao para gerar a amostra Y ####
   vY <- function(n,alpha,phi)
   {
-    ##### Generation of random numbers
-    # Generating the Gamma distribution
+    ##### Geracao dos numeros aleatorios
+    # Gerando a distribuicao Gamma
     W <- rgamma(n,shape = phi, scale = 1/alpha)
     
-    # Generating the Unit Gamma distribution
+    # Gerando a distribuicao Gamma Unitaria
     Y <- exp(-W)
     
     return(Y)
@@ -74,7 +74,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     mi <- exp(eta)/(exp(eta)+1)
     alpha <- ( mi^(1/phi) ) / ( 1 - mi^(1/phi) ) 
     l.beta.phi <- sum( phi*log(alpha) - log(gamma(phi)) + (alpha-1)*log(Y) +
-                          (phi-1)*log(-log(Y)) )
+                         (phi-1)*log(-log(Y)) )
     return(l.beta.phi)
   }
   
@@ -88,7 +88,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     mi <- exp(eta)/(exp(eta)+1)
     alpha <- ( mi^(1/phi) ) / ( 1 - mi^(1/phi) ) 
     l.beta.phi <- sum( phi*log(alpha) - log(gamma(phi)) + (alpha-1)*log(Y) +
-                          (phi-1)*log(-log(Y)) )
+                         (phi-1)*log(-log(Y)) )
     return(l.beta.phi)
   }
   
@@ -103,10 +103,10 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     h.linha.eta <- exp(eta)/((exp(eta)+1)^2)
     mi.star <- alpha/(mi^((1/phi)+1))
     y.star <- ((alpha^2)*log(Y))/(phi*(mi^((1/phi)+1)))
-    mT      <- diag(c(h.linha.eta))
-    s       <- mi.star + y.star
+    mT     <- diag(c(h.linha.eta))
+    s      <- mi.star + y.star
     U.beta <- t(X)%*%mT%*%s
-    u       <- log(-log(Y)) - digamma(phi) - log((mi^(1/phi))/(alpha)) -
+    u      <- log(-log(Y)) - digamma(phi) - log((mi^(1/phi))/(alpha)) -
       (1/phi)*alpha*log(mi)*(1 + ((alpha*log(Y))/(phi*mi^(1/phi))))
     U.phi <- sum(u)
     U <- rbind(U.beta,U.phi)
@@ -153,12 +153,12 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   
   ## Maximization of log-likelihood - Unrestricted ####
   Estimacao <- optim(theta.inic, log.ver, Y=Y, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T)
-  # the estimation reported that log(alpha) generated NA's, is this normal?
+  # a estimação  acusou que log(alpha) gerou NA's isso é normal ?
   theta.hat <- Estimacao$par
   psi.hat   <- theta.hat[2:(q+1)]
   Verossim  <- Estimacao$value
   
-  ## AIC and BIC
+  ## AIC e BIC
   AIC.Gama <- -2*Verossim + 2*p   
   BIC.Gama <- -2*Verossim + log(n)*p
   
@@ -167,7 +167,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   Inv.I.Fisher.hat <- solve(mIF(theta.hat, Y))
   
   
-  ## Standard error for e.m.v. (MLE)
+  ## Standard error for e.m.v.
   EP <- matrix((c(sqrt(diag(Inv.I.Fisher.hat)))),p+1,1)
   
   
@@ -176,7 +176,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   ## Maximization of log-likelihood - Restricted to H0 ####
   theta.inic.til <- c(theta.inic[1],theta.inic[(q+2):(p+1)])
   Estimacao.H0   <- optim(theta.inic.til, log.ver.H0, Y=Y, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T)
-  # the estimation reported that log(phi) generated NA's, is this normal?
+  # a estimação  acusou que log(phi) gerou NA's isso é normal ?
   theta.til      <- c(Estimacao.H0$par[1],psi.0,Estimacao.H0$par[2:(p-q+1)])
   Verossim.H0    <- log.ver(theta.til,Y=Y)
   
@@ -185,7 +185,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   U.til.psi <- vU(theta.til,Y=Y)[2:(q+1)]
   
   ## Statistics of the Likelihood Ratio and p-value - Original
-  RV          <- 2*(Verossim-Verossim.H0)
+  RV         <- 2*(Verossim-Verossim.H0)
   Valor.p.RV <- pchisq(RV,q,lower=F)
   
   
@@ -201,22 +201,22 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   ## Inverse of Fisher's Information Matrix
   Inv.IF.hat <- try(solve(IF.hat),silent=T)
   Inv.IF.til <- try(solve(IF.til),silent=T)
-  Inv.IF.hat.psi.psi <- Inv.IF.hat[2:(q+1),2:(q+1)]       
-  Inv.IF.til.psi.psi <- Inv.IF.til[2:(q+1),2:(q+1)]        
+  Inv.IF.hat.psi.psi <- Inv.IF.hat[2:(q+1),2:(q+1)]           
+  Inv.IF.til.psi.psi <- Inv.IF.til[2:(q+1),2:(q+1)]           
   Inv.Inv.IF.hat.psi.psi <- try(solve(Inv.IF.hat.psi.psi),silent=T)  
   
   
-  ## Score Statistics and p-value - Original
-  Escore     <- U.til.psi%*%Inv.IF.til.psi.psi%*%t(t(U.til.psi))
+  ## Statistics Score and p-value - Original
+  Escore    <- U.til.psi%*%Inv.IF.til.psi.psi%*%t(t(U.til.psi))
   Valor.p.E <- c(pchisq(Escore,q,lower=F))
   
   
   ## Wald's statistic and p-value - Original
-  Wald       <- t(psi.hat-psi.0)%*%Inv.Inv.IF.hat.psi.psi%*%t(t(psi.hat-psi.0)) # WHAT IS WALD FOR?
+  Wald      <- t(psi.hat-psi.0)%*%Inv.Inv.IF.hat.psi.psi%*%t(t(psi.hat-psi.0)) # PARA QUE SERVE WALD ?
   Valor.p.W <- c(pchisq(Wald,q,lower=F))
   
   
-  RV.b      <- NULL
+  RV.b        <- NULL
   Gradiente.b <- NULL
   Escore.b    <- NULL
   Wald.b      <- NULL
@@ -230,10 +230,10 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   cont.Esc.b  <- 0
   cont.Wald.b <- 0
   
-  ## Start of the loop - Bootstrap
+  ## Inmcio do loop - Bootstrap
   for (b in 1:B)
   {
-    ## Generate the bootstrap sample (vector yb*) from theta.hat
+    ## Gerar a amostra bootstrap (vetor yb*) a partir de theta.hat
     beta.hat  <- theta.hat[1:p]
     phi.hat   <- theta.hat[p+1]
     eta.hat   <- X%*%beta.hat
@@ -242,7 +242,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     
     Y.star.hat.b  <- vY(n,alpha.hat,phi.hat)
     
-    ## MLE - Unrestricted - Bootstrap #### 
+    ## EMV - Irrestrita - Bootstrap #### 
     Estimacao.b.vies <- try(optim(theta.inic,log.ver, Y = Y.star.hat.b, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T),silent=T)
     
     
@@ -255,7 +255,7 @@ ugamma.fit <- function(formula = NULL, data = NULL,
       theta.hat.star[,b] <- Estimacao.b.vies$par
     }
     
-    ## Generate the bootstrap sample (vector yb*)
+    ## Gerar a amostra bootstrap (vetor yb*)
     beta.til  <- theta.til[1:p]
     phi.til   <- theta.til[p+1]
     eta.til   <- X%*%beta.til
@@ -264,15 +264,15 @@ ugamma.fit <- function(formula = NULL, data = NULL,
     
     Y.star.b  <- vY(n,alpha.til,phi.til)
     
-    ## Initial guess for theta - Bootstrap ####
+    ## Chute inicial para theta - Bootstrap ####
     beta.inic.b  <- solve(t(X)%*%X)%*%t(X)%*%Y.star.b
     phi.inic.b   <- 20
     theta.inic.b <- matrix(c(beta.inic.b, phi.inic.b),p+1,1)
     
-    ## MLE - Unrestricted - Bootstrap #### 
+    ## EMV - Irrestrita - Bootstrap #### 
     Estimacao.b <- try(optim(theta.hat.star[,b],log.ver, Y = Y.star.b, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T),silent=T)
     
-    ## MLE - Restricted under H0 - Bootstrap ####
+    ## EMV - Restrita sob H0 - Bootstrap ####
     theta.inic.b.H0 <- c(theta.inic.b[1],theta.inic.b[(q+2):(p+1)])
     Estimacao.b.H0  <- try(optim(theta.inic.b.H0, log.ver.H0, Y = Y.star.b, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T),silent=T)
     
@@ -285,35 +285,35 @@ ugamma.fit <- function(formula = NULL, data = NULL,
       Verossim.b    <- log.ver(theta.hat.b, Y = Y.star.b)
       Verossim.b.H0 <- log.ver(theta.til.b, Y = Y.star.b)
       
-      # LR Statistic - Bootstrap
+      # Estatmstica da RV - Bootstrap
       rv.b <- 2*(Verossim.b-Verossim.b.H0)
       
-      ## Score vector evaluated at theta.til
+      ## Vetor escore avaliado em teta.til
       U.til.psi.b <- vU(theta.til.b, Y = Y.star.b)[2:(q+1)]
       
-      # Gradient Statistic - Bootstrap
+      # Estatmstica Gradiente - Bootstrap
       Grad.b <- U.til.psi.b%*%t(t(psi.hat.b-psi.0))
       
-      ## Fisher Information Matrix - Bootstrap
+      ## Matriz de Informagco de Fisher - Bootstrap
       IF.hat.b <- mIF(theta.hat.b, Y = Y.star.b)
       IF.til.b <- mIF(theta.til.b, Y = Y.star.b)
       
-      ## Inverse of Fisher's Information Matrix - Bootstrap
+      ## Inversa da Matriz de Informacao de Fisher - Bootstrap
       Inv.IF.hat.b <- try(solve(IF.hat.b),silent=T)
       Inv.IF.til.b <- try(solve(IF.til.b),silent=T)
-      Inv.IF.hat.psi.psi.b      <- Inv.IF.hat.b[2:(q+1),2:(q+1)]
-      Inv.IF.til.psi.psi.b      <- Inv.IF.til.b[2:(q+1),2:(q+1)]
+      Inv.IF.hat.psi.psi.b     <- Inv.IF.hat.b[2:(q+1),2:(q+1)]
+      Inv.IF.til.psi.psi.b     <- Inv.IF.til.b[2:(q+1),2:(q+1)]
       Inv.Inv.IF.hat.psi.psi.b <- try(solve(Inv.IF.hat.psi.psi.b),silent=T)
       
       if((!inherits(Inv.IF.hat.b, "try-error"))&&(!inherits(Inv.IF.til.b,"try-error"))&&(!inherits(Inv.Inv.IF.hat.psi.psi.b, "try-error")))
       {
-        # Score Statistic - Bootstrap
+        # Estatmstica Escore - Bootstrap
         Esc.b <- U.til.psi.b%*%Inv.IF.til.psi.psi.b%*%t(t(U.til.psi.b))
         
-        # Wald Statistic - Bootstrap
+        # Estatistica Wald - Bootstrap
         Wa.b <- t(psi.hat.b-psi.0)%*%Inv.Inv.IF.hat.psi.psi.b%*%t(t(psi.hat.b-psi.0))
         
-        RV.b[b]      <- max(0, rv.b)
+        RV.b[b]        <- max(0, rv.b)
         Gradiente.b[b] <- max(0, Grad.b)
         Escore.b[b]    <- max(0, Esc.b)
         Wald.b[b]      <- max(0, Wa.b)
@@ -323,12 +323,12 @@ ugamma.fit <- function(formula = NULL, data = NULL,
         cont.Esc.b  <- cont.Esc.b  + (Esc.b>Escore)
         cont.Wald.b <- cont.Wald.b + (Wa.b>Wald)
         
-      }#End of if to check problem in IF inversion 
+      }#Fim do if para verificar problema na inversao da IF 
     } 
     else{
       cont.erro.B = cont.erro.B + 1
       
-      ## Generate the bootstrap sample (vector yb*)
+      ## Gerar a amostra bootstrap (vetor yb*)
       beta.til  <- theta.til[1:p]
       phi.til   <- theta.til[p+1]
       eta.til   <- X%*%beta.til
@@ -338,11 +338,11 @@ ugamma.fit <- function(formula = NULL, data = NULL,
       set.seed(1625*b)
       Y.star.b  <- vY(n,alpha.til,phi.til)
       
-      ## MLE - Unrestricted - Bootstrap #### 
+      ## EMV - Irrestrita - Bootstrap #### 
       Estimacao.b <- try(optim(theta.hat.star[,b],log.ver, Y = Y.star.b, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T),silent=T)
       
       
-      ## MLE - Restricted under H0 - Bootstrap ####
+      ## EMV - Restrita sob H0 - Bootstrap ####
       Estimacao.b.H0  <- try(optim(theta.inic.til, log.ver.H0, Y = Y.star.b, NULL, method = "BFGS", control=list(fnscale=-1), hessian=T),silent=T)
       
       theta.hat.b <- Estimacao.b$par
@@ -352,33 +352,33 @@ ugamma.fit <- function(formula = NULL, data = NULL,
       Verossim.b    <- log.ver(theta.hat.b, Y = Y.star.b)
       Verossim.b.H0 <- log.ver(theta.til.b, Y = Y.star.b)
       
-      # LR Statistic - Bootstrap
+      # Estatmstica da RV - Bootstrap
       rv.b <- 2*(Verossim.b-Verossim.b.H0)
       
-      ## Score vector evaluated at theta.til
+      ## Vetor escore avaliado em teta.til
       U.til.psi.b <- vU(theta.til.b, Y = Y.star.b)[2:(q+1)]
       
-      # Gradient Statistic - Bootstrap
+      # Estatmstica Gradiente - Bootstrap
       Grad.b <- U.til.psi.b%*%t(t(psi.hat.b-psi.0))
       
-      ## Fisher Information Matrix - Bootstrap
+      ## Matriz de Informagco de Fisher - Bootstrap
       IF.hat.b <- mIF(theta.hat.b, Y = Y.star.b)
       IF.til.b <- mIF(theta.til.b, Y = Y.star.b)
       
-      ## Inverse of Fisher's Information Matrix - Bootstrap
+      ## Inversa da Matriz de Informagco de Fisher - Bootstrap
       Inv.IF.hat.b <- try(solve(IF.hat.b),T)
       Inv.IF.til.b <- try(solve(IF.til.b),T)
-      Inv.IF.hat.psi.psi.b      <- Inv.IF.hat.b[2:(q+1),2:(q+1)]
-      Inv.IF.til.psi.psi.b      <- Inv.IF.til.b[2:(q+1),2:(q+1)]
+      Inv.IF.hat.psi.psi.b     <- Inv.IF.hat.b[2:(q+1),2:(q+1)]
+      Inv.IF.til.psi.psi.b     <- Inv.IF.til.b[2:(q+1),2:(q+1)]
       Inv.Inv.IF.hat.psi.psi.b <- try(solve(Inv.IF.hat.psi.psi.b),T)
       
-      # Score Statistic - Bootstrap
+      # Estatmstica Escore - Bootstrap
       Esc.b <- U.til.psi.b%*%Inv.IF.til.psi.psi.b%*%t(t(U.til.psi.b))
       
-      # Wald Statistic - Bootstrap
+      # Estatmstica Wald - Bootstrap
       Wa.b <- t(psi.hat.b-psi.0)%*%Inv.Inv.IF.hat.psi.psi.b%*%t(t(psi.hat.b-psi.0))
       
-      RV.b[b]      <- max(0, rv.b)
+      RV.b[b]        <- max(0, rv.b)
       Gradiente.b[b] <- max(0, Grad.b)
       Escore.b[b]    <- max(0, Esc.b)
       Wald.b[b]      <- max(0, Wa.b)
@@ -389,8 +389,8 @@ ugamma.fit <- function(formula = NULL, data = NULL,
       cont.Wald.b <- cont.Wald.b + (Wa.b>Wald)
       
       
-    } #End of if to check problem in estimation
-  }#End of Bootstrap loop
+    } #Fim do if para verificar problema na estimagco
+  }#Fim do loop de Bootstrap
   
   ## P-value - Bootstrap
   Valor.p.RV.b <- cont.RV.b/B
@@ -402,21 +402,21 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   Media.theta.hat.star  <- apply(theta.hat.star,1,mean)
   vies.hat              <- Media.theta.hat.star - theta.hat
   theta.corr.boot       <- theta.hat - vies.hat
-  Inv.I.Fisher.hat.boot <- solve(mIF(theta.corr.boot, Y)) ## Inverse of Fisher's information 
-  EP.boot               <- matrix((c(sqrt(diag(Inv.I.Fisher.hat.boot)))),p+1,1) ## Standard error for bootstrap MLE
+  Inv.I.Fisher.hat.boot <- solve(mIF(theta.corr.boot, Y)) ## Inversa da informacao de Fisher  
+  EP.boot               <- matrix((c(sqrt(diag(Inv.I.Fisher.hat.boot)))),p+1,1) ## Erro padrao para e.m.v. bootstrap
   
   
   # Bartlett's Bootstrap Corrected p-Value
   Media.RV.boot <- mean(rv.b, na.rm=T)
-  RV.bart.b       <- (RV*q)/Media.RV.boot
+  RV.bart.b     <- (RV*q)/Media.RV.boot
   Valor.p.RV.boot.bart <- pchisq(RV.bart.b,q,lower=F)
   
-  ## Unrestricted MLE for parameters ####
+  ## Unrestricted EMV for parameters ####
   EMV <- theta.hat
   
   
   
-  ## MLE restricted to H0 for the parameters ####
+  ## EMV restricted to H0 for the parameters ####
   EMV.H0 <- theta.til
   
   ## Bootstrap estimates for the parameters ###
@@ -467,10 +467,10 @@ ugamma.fit <- function(formula = NULL, data = NULL,
   return(res)
 }
 # --------------------
-# summary for Unit.gamma
+# summary para Unit.gamma
 # --------------------
 summary.Unit.gamma <- function(object, digits = 3, ...) {
-  if (!inherits(object, "Unit.gamma")) stop("Use an object returned by Unit.gamma.reg")
+  if (!inherits(object, "Unit.gamma")) stop("Use um objeto retornado por Unit.gamma.reg")
   cat("===========================================\n")
   cat("Model Summary - Unit Gamma  (Ugamma.fit)\n")
   cat("===========================================\n")
@@ -496,3 +496,6 @@ summary.Unit.gamma <- function(object, digits = 3, ...) {
   cat("===========================================\n")
   invisible(object)
 }
+
+
+
