@@ -5,13 +5,11 @@ This project offers an R script implementing a unit gamma model with bootstrap b
 ### Função Ugamma.fit()
 #### ugamma.fit <- function(formula = NULL, data = NULL,= NULL, X = NULL,intercepto = TRUE,q = 1, B = 1000) 
 
-- formula:  é a maneira de definir a variavel resposta e as preditoras de maneira mais clara, similiar a maneira que é implementado nos comando lm() e glm(), a forma de entrada é: Resposta $\sim$ preditora1 + preditora 2 + \ldots;
-- data: aqui deve-se especificar o dataset desejado, evita conflito de banco de dados;
-- Y: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor para Y, da forma Y=vetor.;
-- X: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor ou com uma matriz de varias colunas para X, da forma X=vetor ou X=matriz.;
-- intercepto: Caso o usuario penha um dataset que ja possua o intercepto ele pode obtar por retira-lo, basta apenas definir, intercepto=FALSE, caso contrario, em nosso codigo o intercepto é inserido no conjunto de dados por padrão;
-- q: este parametro defini quantas variaveis iremos testar nos teste de hipoteses, com q$\geq$2 os teste passam a ser multiparametricos;
-- B: este parametros define o numero de repetições que seram realizados na etapa de bootstrap;
-
+- formula: This is the method used to define the response variable and the predictor variables in a clearer way, similar to how it is implemented in the lm() and glm() commands. The input format is: Response $\sim$ predictor1 + predictor2 + ...;
+- data: Here, the desired dataset must be specified, which helps avoid database conflicts;Y: If the user prefers not to use the formula argument, they can directly input a vector for Y, in the format Y = vector;
+- X: If the user prefers not to use the formula argument, they can directly input a vector or a matrix with multiple columns for X, in the format X = vector or X = matrix. The input data for X must be numeric.
+- intercepto (intercept): If the user has a dataset that already includes the intercept, they can choose to remove it by setting intercepto = FALSE. Otherwise, the intercept is inserted into the dataset by default in our code;
+- q: This parameter defines how many variables will be tested in the hypothesis tests. With $q \geq 2$, the tests become multiparametric;
+- B: This parameter defines the number of repetitions that will be performed during the bootstrap step.
 
 ### Função summary.Unit.gamma() 
