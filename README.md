@@ -4,14 +4,13 @@ This project offers an R script implementing a unit gamma model with bootstrap b
 ## Parametros das funções 
 ### Função Ugamma.fit()
 
-\begin{itemize}
-    \item \texttt{formula}: é a maneira de definir a variavel resposta e as preditoras de maneira mais clara, similiar a maneira que é implementado nos comando lm() e glm(), a forma de entrada é: Resposta $\sim$ preditora1 + preditora 2 + \ldots;
-    \item \texttt{data}: aqui deve-se especificar o dataset desejado, evita conflito de banco de dados;
-    \item \texttt{Y}: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor para Y, da forma Y=vetor.;
-    \item \texttt{X}: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor ou com uma matriz de varias colunas para X, da forma X=vetor ou X=matriz.;
-    \item \texttt{intercepto}: Caso o usuario penha um dataset que ja possua o intercepto ele pode obtar por retira-lo, basta apenas definir, intercepto = FALSE, caso contrario, em nosso codigo o intercepto é inserido no conjunto de dados por padrão;
-    \item \texttt{q}: este parametro defini quantas variaveis iremos testar nos teste de hipoteses, com q$\geq$2 os teste passam a ser multiparametricos;
-    \item \texttt{B}: este parametros define o numero de repetições que seram realizados na etapa de bootstrap;
-\end{itemize}
+- formula:  é a maneira de definir a variavel resposta e as preditoras de maneira mais clara, similiar a maneira que é implementado nos comando lm() e glm(), a forma de entrada é: Resposta $\sim$ preditora1 + preditora 2 + \ldots;
+- data: aqui deve-se especificar o dataset desejado, evita conflito de banco de dados;
+- Y: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor para Y, da forma Y=vetor.;
+- X: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor ou com uma matriz de varias colunas para X, da forma X=vetor ou X=matriz.;
+- intercepto: Caso o usuario penha um dataset que ja possua o intercepto ele pode obtar por retira-lo, basta apenas definir, intercepto=FALSE, caso contrario, em nosso codigo o intercepto é inserido no conjunto de dados por padrão;
+- q: este parametro defini quantas variaveis iremos testar nos teste de hipoteses, com q$\geq$2 os teste passam a ser multiparametricos;
+- B: este parametros define o numero de repetições que seram realizados na etapa de bootstrap;
+
 
 ### Função summary.Unit.gamma() 
