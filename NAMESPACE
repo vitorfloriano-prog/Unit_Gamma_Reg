@@ -13,12 +13,11 @@ importFrom(stats, model.response)
 importFrom(stats, runif)
 importFrom(stats, rgamma)
 importFrom(stats, pchisq)
-importFrom(stats, set.seed)
 
 # IMPORTAÇÕES DE 'utils'
 importFrom(utils, head)
 
-# IMPORTAÇÕES DO PACOTE 'base' (Incluindo todas as funções base identificadas)
+# IMPORTAÇÕES DO PACOTE 'base' (Lista completa de funções básicas)
 importFrom(base, inherits)
 importFrom(base, parent.frame)
 importFrom(base, solve)
@@ -48,9 +47,10 @@ importFrom(base, row.names)
 importFrom(base, invisible)
 importFrom(base, digamma)
 importFrom(base, trigamma)
-importFrom(base, pmin)  # CORRIGIDO!
-importFrom(base, pmax)  # CORRIGIDO!
-importFrom(base, log)   # Função matemática básica, é seguro importar do base.
-importFrom(base, exp)   # Função matemática básica, é seguro importar do base.
-importFrom(base, sqrt)  # Função matemática básica, é seguro importar do base.
-importFrom(base, sum)   # Função matemática básica, é seguro importar do base.
+importFrom(base, pmin)
+importFrom(base, pmax)
+importFrom(base, log)
+importFrom(base, exp)
+importFrom(base, sqrt)
+importFrom(base, sum)
+importFrom(base, set.seed) # CORRIGIDO!
