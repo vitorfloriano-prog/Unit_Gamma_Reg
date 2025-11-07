@@ -1,18 +1,15 @@
-# Exporta as funções principais do seu pacote para que o usuário possa chamá-las (ex: UnitGammaReg::ugamma.fit)
+# Exporta as funções principais do seu pacote.
 export(ugamma.fit)
 export(summary.Unit.gamma)
 
 # Define o método genérico 'summary' para a sua nova classe 'Unit.gamma'.
-# Isso é o que permite ao R chamar summary.Unit.gamma(meu_modelo).
 S3method(summary, Unit.gamma)
 
-# IMPORTAÇÕES ESSENCIAIS:
-# (Listando funções do pacote 'stats' que você usa em ugamma.fit)
+# IMPORTAÇÕES DE 'stats'
 importFrom(stats, optim)
 importFrom(stats, model.frame)
 importFrom(stats, model.matrix)
 importFrom(stats, model.response)
-importFrom(stats, parent.frame)
 importFrom(stats, runif)
 importFrom(stats, rgamma)
 importFrom(stats, pchisq)
@@ -22,11 +19,12 @@ importFrom(stats, pmin)
 importFrom(stats, pmax)
 importFrom(stats, set.seed)
 
-# (Listando funções do pacote 'utils' que você usa)
-importFrom(utils, head) # Uso implícito em algumas operações, bom incluir o 'try'
+# IMPORTAÇÕES DE 'utils'
+importFrom(utils, head)
 
-# (Para try e try-error)
+# IMPORTAÇÕES DO PACOTE 'base' (Aonde parent.frame pertence)
 importFrom(base, inherits)
+importFrom(base, parent.frame) # CORRIGIDO!
 importFrom(base, solve)
 importFrom(base, all)
 importFrom(base, cbind)
