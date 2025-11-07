@@ -3,10 +3,8 @@ This project offers an R script implementing a unit gamma model with bootstrap b
 
 ## Parametros das funções 
 ### Função Ugamma.fit()
-#### ugamma.fit <- function(formula = NULL, data = NULL,
-                       Y = NULL, X = NULL,
-                       intercepto = TRUE,
-                       q = 1, B = 1000) 
+#### ugamma.fit <- function(formula = NULL, data = NULL,= NULL, X = NULL,intercepto = TRUE,q = 1, B = 1000) 
+
 - formula:  é a maneira de definir a variavel resposta e as preditoras de maneira mais clara, similiar a maneira que é implementado nos comando lm() e glm(), a forma de entrada é: Resposta $\sim$ preditora1 + preditora 2 + \ldots;
 - data: aqui deve-se especificar o dataset desejado, evita conflito de banco de dados;
 - Y: caso o usuario não queira a ulizar a formula, ele pode entrar diretamente com um vetor para Y, da forma Y=vetor.;
