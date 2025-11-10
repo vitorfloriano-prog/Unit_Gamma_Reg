@@ -1,25 +1,22 @@
-# Exporta as funções principais do seu pacote.
+# Exporta as funções principais do usuário
 export(ugamma.fit)
-export(summary.Unit.gamma)
-
-# Define o método S3 'summary' para a sua nova classe 'Unit.gamma'.
-S3method(summary, Unit.gamma)
+export(summary.Unit.gamma) # A função *método* deve ser exportada
 
 # IMPORTAÇÕES DE 'stats'
 importFrom(stats, optim)
 importFrom(stats, model.frame)
 importFrom(stats, model.matrix)
 importFrom(stats, model.response)
-importFrom(stats, runif)
 importFrom(stats, rgamma)
 importFrom(stats, pchisq)
 
-# --- IMPORTAÇÕES ESSENCIAIS FALTANTES (PACOTE 'base') ---
-# Funções essenciais para cálculo da Matriz de Informação de Fisher (mIF)
+# IMPORTAÇÕES DE 'base' (Cruciais para funções matemáticas e matriciais)
 importFrom(base, digamma)
 importFrom(base, trigamma)
 importFrom(base, gamma)
-importFrom(base, solve) # Crucial para inversão de matrizes (solve) e a inicialização
+importFrom(base, solve)
 
 # IMPORTAÇÕES DE 'utils'
-importFrom(utils, head)
+# (runif e head não parecem ser usadas no código fornecido, mas se forem, mantenha)
+# importFrom(stats, runif) 
+# importFrom(utils, head)
