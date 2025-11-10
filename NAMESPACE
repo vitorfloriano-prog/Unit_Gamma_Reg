@@ -1,9 +1,6 @@
 # Exporta as funções principais do usuário
 export(ugamma.fit)
-export(summary.Unit.gamma) # A função *método* deve ser exportada
-
-# Importa o genérico 'summary' do pacote base
-importFrom(base, summary)
+export(summary.Unit.gamma)
 
 # IMPORTAÇÕES DE 'stats'
 importFrom(stats, optim)
@@ -13,8 +10,11 @@ importFrom(stats, model.response)
 importFrom(stats, rgamma)
 importFrom(stats, pchisq)
 
-# IMPORTAÇÕES DE 'base' (Cruciais para funções matemáticas e matriciais)
+# IMPORTAÇÕES ESSENCIAIS DE 'base' (Críticas para operações matemáticas e matriciais)
+importFrom(base, solve)
 importFrom(base, digamma)
 importFrom(base, trigamma)
 importFrom(base, gamma)
-importFrom(base, solve)
+
+# IMPORTAÇÕES ADICIONAIS
+importFrom(utils, head)
