@@ -1,19 +1,35 @@
-# Exporta as funções principais do usuário
+ # Exporta as funções principais do seu pacote.
+
 export(ugamma.fit)
+
 export(summary.Unit.gamma)
 
+
+
+# Define o método genérico 'summary' para a sua nova classe 'Unit.gamma'.
+
+S3method(summary, Unit.gamma)
+
+
+
 # IMPORTAÇÕES DE 'stats'
+
 importFrom(stats, optim)
+
 importFrom(stats, model.frame)
+
 importFrom(stats, model.matrix)
+
 importFrom(stats, model.response)
+
+importFrom(stats, runif)
+
 importFrom(stats, rgamma)
+
 importFrom(stats, pchisq)
 
-# IMPORTAÇÕES ESSENCIAIS DE 'base' (Removendo 'solve' para evitar o erro de namespace)
-importFrom(base, digamma)
-importFrom(base, trigamma)
-importFrom(base, gamma)
 
-# IMPORTAÇÕES ADICIONAIS
+
+# IMPORTAÇÕES DE 'utils'
+
 importFrom(utils, head)
