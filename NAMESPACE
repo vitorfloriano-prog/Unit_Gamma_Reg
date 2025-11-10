@@ -2,6 +2,9 @@
 export(ugamma.fit)
 export(summary.Unit.gamma) # A função *método* deve ser exportada
 
+# Importa o genérico 'summary' do pacote base
+importFrom(base, summary)
+
 # IMPORTAÇÕES DE 'stats'
 importFrom(stats, optim)
 importFrom(stats, model.frame)
@@ -15,8 +18,3 @@ importFrom(base, digamma)
 importFrom(base, trigamma)
 importFrom(base, gamma)
 importFrom(base, solve)
-
-# IMPORTAÇÕES DE 'utils'
-# (runif e head não parecem ser usadas no código fornecido, mas se forem, mantenha)
-# importFrom(stats, runif) 
-# importFrom(utils, head)
