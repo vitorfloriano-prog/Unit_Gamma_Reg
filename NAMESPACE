@@ -11,6 +11,7 @@ importFrom(stats, rgamma)
 importFrom(stats, pchisq)
 
 # IMPORTAÇÕES ESSENCIAIS DE 'base' (Críticas para operações matemáticas e matriciais)
+# Não importamos 'summary' para evitar o erro "operation not allowed on base namespace"
 importFrom(base, solve)
 importFrom(base, digamma)
 importFrom(base, trigamma)
