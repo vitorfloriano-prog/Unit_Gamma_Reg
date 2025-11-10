@@ -10,9 +10,7 @@ importFrom(stats, model.response)
 importFrom(stats, rgamma)
 importFrom(stats, pchisq)
 
-# IMPORTAÇÕES ESSENCIAIS DE 'base' (Críticas para operações matemáticas e matriciais)
-# Não importamos 'summary' para evitar o erro "operation not allowed on base namespace"
-importFrom(base, solve)
+# IMPORTAÇÕES ESSENCIAIS DE 'base' (Removendo 'solve' para evitar o erro de namespace)
 importFrom(base, digamma)
 importFrom(base, trigamma)
 importFrom(base, gamma)
