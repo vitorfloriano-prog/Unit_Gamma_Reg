@@ -1,8 +1,8 @@
 # Unit_Gamma_Reg
 This project offers an R script implementing a unit gamma model with bootstrap bias correction. It includes a function for the summary() command to work like in lm()/glm(). The main function returns parameter MLEs and bias-corrected estimates. Users can also perform hypothesis tests for beta1 or multiparametric tests, retaining the intercept.
 
-## Parametros das funções 
-### Função Ugamma.fit()
+## Function Parameters
+### Ugamma.fit() function
 #### ugamma.fit <- function(formula = NULL, data = NULL,= NULL, X = NULL,intercepto = TRUE,q = 1, B = 1000) 
 
 - formula: This is the method used to define the response variable and the predictor variables in a clearer way, similar to how it is implemented in the lm() and glm() commands. The input format is: Response $\sim$ predictor1 + predictor2 + ...;
