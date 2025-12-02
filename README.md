@@ -1,15 +1,49 @@
-# Unit_Gamma_Reg
-This project offers an R script implementing a unit gamma model with bootstrap bias correction. It includes a function for the summary() command to work like in lm()/glm(). The main function returns parameter MLEs and bias-corrected estimates. Users can also perform hypothesis tests for beta1 or multiparametric tests, retaining the intercept.
+# UnitGammaReg
+This package implements a Unit Gamma regression model with bootstrap bias correction. 
+It includes a summary() method that behaves similarly to the summary.lm() and 
+summary.glm() functions. The main function returns parameter MLEs and 
+bias-corrected estimates. Users can also perform hypothesis tests for a single 
+parameter ($beta_1$) or multiple-parameter hypothesis tests, retaining the intercept.
 
 ## Function Parameters
-### Ugamma.fit() function
-#### ugamma.fit <- function(formula = NULL, data = NULL,= NULL, X = NULL,intercepto = TRUE,q = 1, B = 1000) 
 
-- formula: This is the method used to define the response variable and the predictor variables in a clearer way, similar to how it is implemented in the lm() and glm() commands. The input format is: Response $\sim$ predictor1 + predictor2 + ...;
-- data: Here, the desired dataset must be specified, which helps avoid database conflicts;Y: If the user prefers not to use the formula argument, they can directly input a vector for Y, in the format Y = vector;
-- X: If the user prefers not to use the formula argument, they can directly input a vector or a matrix with multiple columns for X, in the format X = vector or X = matrix. The input data for X must be numeric.
-- intercepto (intercept): If the user has a dataset that already includes the intercept, they can choose to remove it by setting intercepto = FALSE. Otherwise, the intercept is inserted into the dataset by default in our code;
-- q: This parameter defines how many variables will be tested in the hypothesis tests. With $q \geq 2$, the tests become multiparametric;
-- B: This parameter defines the number of repetitions that will be performed during the bootstrap step.
+### `ugamma.fit()` function
 
-The summary.Unit.gamma function does not require any parameters, only the fitted model, for the reasons already mentioned in the preceding paragraphs.
+```r
+ugamma.fit <- function(
+  formula = NULL, 
+  data = NULL,
+  Y = NULL,
+  X = NULL,
+  intercept = TRUE,
+  q = 1, 
+  B = 1000
+)
+```
+- `formula`: Specifies the model using the standard R formula interface, similar to 
+  `lm()` and `glm()`.  
+  Example: `Response ~ predictor1 + predictor2 + ...`.
+
+- `data`: The dataset containing the variables used in the formula, helping to avoid 
+  conflicts between objects in the workspace.
+
+- `Y`: If the user chooses not to use the `formula` argument, they can directly 
+  provide a numeric vector for the response variable `Y`.
+
+- `X`: If not using the `formula` argument, the user may provide a numeric vector or 
+  matrix for the predictors.  
+  The input must be numeric: `X = vector` or `X = matrix`.
+
+- `intercept`: If the dataset already includes an intercept column, 
+  the user may disable the automatic intercept insertion by setting 
+  `intercept = FALSE`. Otherwise, the intercept is included by default.
+
+- `q`: Number of parameters included in the hypothesis test.  
+  For `q >= 2`, the tests become multiple-parameter hypothesis tests.
+
+- `B`: Number of bootstrap replications performed during the bias-correction step.
+
+### `summary.Unit.gamma` function
+
+This function requires no additional arguments besides the fitted model, 
+for the reasons described previously.
