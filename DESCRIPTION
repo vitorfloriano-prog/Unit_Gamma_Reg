@@ -1,16 +1,16 @@
 Package: UnitGammaReg
-Title: Desenvolvimento de Scripts para Inferência via Bootstrap no Modelo de Regressão Gama Unitária
+Title: Tools for Bootstrap-Based Inference in Unit Gamma Regression Models
 Version: 0.0.0.9000
-Authors@R: person(given = "Vitor Hugo ",
-                  family = "Floriano Pereira",
+Authors@R: person(given = "Vitor Hugo Floriano",
+                  family = "Pereira",
                   role = c("aut", "cre"),
                   email = "vitor.floriano@discente.ufg.br",
-                  comment = "Primeiro Autor e Criador")
+                  comment ="Original package author")
 Description: Implements routines to fit regression models for the Unit Gamma distribution,
     compute maximum likelihood estimates (MLE), and perform hypothesis tests (Likelihood Ratio,
     Wald, Score, and Gradient tests). Also provides bias-correction methods and bootstrap-based
     p-values.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
